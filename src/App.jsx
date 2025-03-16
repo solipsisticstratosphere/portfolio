@@ -22,12 +22,18 @@ import {
   Database,
   Globe,
   Layers,
+  Eye,
 } from "lucide-react";
 
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState("hero");
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+    setModalOpen(true);
+  };
   const skills = [
     { name: "React", level: 92 },
     { name: "Node.js", level: 88 },
@@ -80,6 +86,7 @@ const Portfolio = () => {
         "React",
         "Redux",
         "MongoDB",
+        "Google OAuth",
         "Monobank API",
         "TensorFlow.js",
         "Node.js",
@@ -301,6 +308,7 @@ const Portfolio = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * index, duration: 0.5 }}
+              onClick={() => handleProjectClick(project)}
             >
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2 text-center text-gray-100">
@@ -325,11 +333,21 @@ const Portfolio = () => {
                 </div>
 
                 <div className="flex justify-center gap-3 mt-4">
+                  <button
+                    className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent the card's onClick from firing
+                      handleProjectClick(project);
+                    }}
+                  >
+                    <Eye size={14} /> View Preview
+                  </button>
                   <a
                     href={project.demoLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <ExternalLink size={14} /> Demo
                   </a>
@@ -338,6 +356,7 @@ const Portfolio = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <FaGithub size={24} className="text-gray-200" /> GitHub
                   </a>
@@ -349,7 +368,81 @@ const Portfolio = () => {
       </motion.div>
     </motion.div>
   );
+  const ProjectModal = ({ project, isOpen, onClose }) => {
+    if (!isOpen || !project) return null;
 
+    return (
+      <motion.div
+        className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="bg-gray-800 rounded-lg overflow-hidden max-w-4xl w-full"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+            <h3 className="text-xl font-bold text-gray-100">{project.title}</h3>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div className="p-4">
+            <img
+              src={`/src/screenshots/${project.title
+                .toLowerCase()
+                .replace(/\s+/g, "-")}.png`}
+              alt={`${project.title} screenshot`}
+              className="w-full h-auto rounded"
+              onError={(e) => {
+                e.target.src = "/api/placeholder/800/500";
+                e.target.alt = "Screenshot not available";
+              }}
+            />
+            <div className="mt-4">
+              <a
+                href={project.demoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md inline-flex items-center gap-2 mr-4"
+              >
+                <ExternalLink size={16} /> Visit Website
+              </a>
+              <a
+                href={project.repoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 border border-indigo-500 text-indigo-400 hover:text-indigo-300 rounded-md inline-flex items-center gap-2"
+              >
+                <FaGithub size={16} /> View Code
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  };
   const Skills = () => (
     <motion.div
       className="min-h-screen flex flex-col justify-center px-8 md:px-16 py-16"
@@ -654,7 +747,11 @@ const Portfolio = () => {
       </header>
 
       <main className="pt-16">{renderSection()}</main>
-
+      <ProjectModal
+        project={selectedProject}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
       <footer className="bg-gray-900 border-t border-gray-800 py-6">
         <div className="container mx-auto px-6 text-center text-gray-400">
           <p>
