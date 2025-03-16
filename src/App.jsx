@@ -15,8 +15,6 @@ import {
   Briefcase,
   PenTool,
   Mail,
-  Github,
-  Linkedin,
   MessageSquare,
   ExternalLink,
   ChevronRight,
@@ -26,6 +24,7 @@ import {
   Layers,
 } from "lucide-react";
 
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState("hero");
 
@@ -35,58 +34,77 @@ const Portfolio = () => {
     { name: "MongoDB", level: 85 },
     { name: "Express", level: 90 },
     { name: "JavaScript", level: 95 },
-    { name: "TypeScript", level: 80 },
+    { name: "TypeScript", level: 70 },
     { name: "Next.js", level: 78 },
-    { name: "GraphQL", level: 75 },
+    { name: "GraphQL", level: 60 },
   ];
 
   const projects = [
     {
-      title: "E-commerce Platform",
+      title: "Learn Lingo",
       description:
-        "A full-featured e-commerce platform with product catalog, shopping cart, payment processing, and admin panel for managing products and orders.",
+        "A full-featured language learning platform connecting students with professional instructors through smart search, personalized profiles, a favorites system, and secure Firebase-powered authentication.",
+      technologies: ["React", "Redux", "Vite", "React Hook Form", "Firebase"],
+      demoLink: "https://learn-lingo-nu-ten.vercel.app/",
+      repoLink: "https://github.com/solipsisticstratosphere/LearnLingo",
+    },
+    {
+      title: "Travel Trucks",
+      description:
+        "An online platform for discovering camper vans, featuring intuitive filters for selecting vehicles by type, location, and amenities, along with detailed specifications, user reviews, a favorites list, and a convenient booking form.",
+      technologies: ["React", "Redux", "Node.js", "Express", "MongoDB"],
+      demoLink: "https://travel-trucks-navy.vercel.app/",
+      repoLink: "https://github.com/solipsisticstratosphere/TravelTrucks",
+    },
+    {
+      title: "Read Journey",
+      description:
+        "A sophisticated web platform that transforms your reading experience with personal library management, reading progress tracking, tailored book recommendations, and a seamless, secure interface powered by MongoDB and React.",
       technologies: [
         "React",
+        "Node.js",
         "Redux",
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "JWT Auth",
-        "Stripe API",
-      ],
-      demoLink: "https://example.com/demo1",
-      repoLink: "https://github.com/username/ecommerce-platform",
-    },
-    {
-      title: "Task Management System",
-      description:
-        "An enterprise project management application with team collaboration features, time tracking, task assignment, and progress reporting.",
-      technologies: [
-        "React",
-        "TypeScript",
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "Socket.io",
-        "Redis",
-      ],
-      demoLink: "https://example.com/demo2",
-      repoLink: "https://github.com/username/task-management",
-    },
-    {
-      title: "Blogging Platform",
-      description:
-        "A scalable blogging platform with a text editor, publishing functionality, commenting features, and real-time analytics.",
-      technologies: [
-        "Next.js",
         "MongoDB Atlas",
         "Express",
         "AWS S3",
         "Cloudinary",
-        "NextAuth.js",
       ],
-      demoLink: "https://example.com/demo3",
-      repoLink: "https://github.com/username/blog-platform",
+      demoLink: "https://read-journey-umber.vercel.app/register",
+      repoLink: "https://github.com/solipsisticstratosphere/ReadJourney",
+    },
+    {
+      title: "Finance Manager",
+      description:
+        "A full-featured web application designed to help users effectively analyze and control their personal finances. With a sleek and intuitive interface, users can manage expenses, track income, and gain valuable insights into their financial health.",
+      technologies: [
+        "React",
+        "Redux",
+        "MongoDB",
+        "Monobank API",
+        "TensorFlow.js",
+        "Node.js",
+        "Express",
+        "Recharts",
+      ],
+      demoLink: "https://finance-manager-front.vercel.app/landing",
+      repoLink:
+        "https://github.com/solipsisticstratosphere/FinanceManager-front",
+    },
+    {
+      title: "Napkin-mini",
+      description:
+        "A powerful web application that transforms text descriptions into interactive visualizations, featuring text preprocessing, relationship parsing, and dynamic graph generation with ReactFlow, powered by microservices and Axios for seamless API integration.",
+      technologies: [
+        "React",
+        "Microservices Architecture",
+        "React Flow",
+        "Axios",
+        "Node.js",
+        "Express",
+        "Blob",
+      ],
+      demoLink: "https://napkin-mini.vercel.app/",
+      repoLink: "https://github.com/solipsisticstratosphere/Napkin-mini",
     },
   ];
 
@@ -162,21 +180,23 @@ const Portfolio = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div>
             <p className="text-lg mb-4 text-gray-300">
-              I'm a Full Stack developer with more than 5 years of experience in
-              creating modern web applications. I specialize in the MERN stack
-              (MongoDB, Express, React, Node.js) and have experience developing
-              both large enterprise systems and startup projects.
+              I am a Junior Full Stack developer with a focus on building modern
+              web applications. My expertise lies in the MERN stack (MongoDB,
+              Express, React, Node.js), with experience in developing both
+              small-scale projects and gaining practical knowledge through
+              coursework and personal projects.
             </p>
             <p className="text-lg mb-4 text-gray-300">
-              My approach involves creating a robust and scalable backend
-              architecture combined with a responsive and intuitive user
-              interface. I adhere to Clean Code principles and pay attention to
-              security and performance optimization.
+              My approach revolves around learning to design robust and scalable
+              backend architecture while ensuring a responsive and intuitive
+              user interface. I aim to follow Clean Code principles and
+              gradually improve my understanding of security and performance
+              optimization.
             </p>
             <p className="text-lg text-gray-300">
-              In my free time, I improve my DevOps skills, contribute to
-              open-source projects, and learn new technologies through
-              participating in hackathons and online courses.
+              In addition to my core development work, I actively explore new
+              technologies like Next.js and TypeScript, create pet projects, and
+              participate in team-based projects to enhance my skills.
             </p>
           </div>
 
@@ -231,8 +251,8 @@ const Portfolio = () => {
                   size={18}
                 />
                 <span className="text-gray-300">
-                  Setting up CI/CD pipelines and deploying to various hosting
-                  platforms (AWS, Heroku, Vercel)
+                  Implementing data fetching and state management in React
+                  applications
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -319,7 +339,7 @@ const Portfolio = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
                   >
-                    <Github size={14} /> GitHub
+                    <FaGithub size={24} className="text-gray-200" /> GitHub
                   </a>
                 </div>
               </div>
@@ -484,19 +504,19 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <motion.a
-              href="mailto:fullstack@example.com"
+              href="mailto:klimyarik13@gmail.com"
               className="flex items-center gap-4 p-6 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 hover:border-indigo-700 transition-all duration-300"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <Mail size={24} className="text-indigo-500" />
               <div>
                 <h3 className="font-semibold text-gray-200">Email</h3>
-                <p className="text-gray-400">fullstack@example.com</p>
+                <p className="text-gray-400">klimyarik13@gmail.com</p>
               </div>
             </motion.a>
 
             <motion.a
-              href="https://t.me/fullstack_dev"
+              href="https://t.me/nosebl33d"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-4 p-6 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 hover:border-indigo-700 transition-all duration-300"
@@ -505,30 +525,30 @@ const Portfolio = () => {
               <MessageSquare size={24} className="text-indigo-500" />
               <div>
                 <h3 className="font-semibold text-gray-200">Telegram</h3>
-                <p className="text-gray-400">@fullstack_dev</p>
+                <p className="text-gray-400">@nosebl33d</p>
               </div>
             </motion.a>
           </div>
 
           <div className="flex justify-center gap-6">
             <motion.a
-              href="https://github.com/fullstack-dev"
+              href="https://github.com/solipsisticstratosphere"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ y: -5, scale: 1.1, transition: { duration: 0.2 } }}
               className="p-3 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-full shadow-lg border border-gray-700 hover:border-indigo-600 transition-all duration-300"
             >
-              <Github size={24} className="text-gray-200" />
+              <FaGithub size={24} className="text-indigo-500" />
             </motion.a>
 
             <motion.a
-              href="https://linkedin.com/in/fullstack-dev"
+              href="https://www.linkedin.com/in/klimenko-yaroslav/"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ y: -5, scale: 1.1, transition: { duration: 0.2 } }}
               className="p-3 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-full shadow-lg border border-gray-700 hover:border-indigo-600 transition-all duration-300"
             >
-              <Linkedin size={24} className="text-indigo-500" />
+              <FaLinkedin size={24} className="text-indigo-500" />
             </motion.a>
           </div>
         </div>
