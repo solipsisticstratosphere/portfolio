@@ -336,7 +336,7 @@ const Portfolio = () => {
                   <button
                     className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent the card's onClick from firing
+                      e.stopPropagation();
                       handleProjectClick(project);
                     }}
                   >
@@ -410,7 +410,7 @@ const Portfolio = () => {
           </div>
           <div className="p-4">
             <img
-              src={`/src/screenshots/${project.title
+              src={`/screenshots/${project.title
                 .toLowerCase()
                 .replace(/\s+/g, "-")}.png`}
               alt={`${project.title} screenshot`}
