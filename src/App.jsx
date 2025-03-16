@@ -133,15 +133,17 @@ const Portfolio = () => {
         className="max-w-4xl mx-auto text-center"
       >
         <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
-          Full Stack Developer
+          Yaroslav Klimenko - Full Stack Developer
         </h1>
         <h2 className="text-3xl md:text-4xl text-gray-400 mb-6">
           Building complex web applications from server to client
         </h2>
         <p className="text-xl max-w-2xl mx-auto mb-8 text-gray-300">
-          I develop scalable and high-performance applications using modern
-          JavaScript stack: React, MongoDB, Node.js, and Express.
+          I'm Yaroslav Klimenko, a Full Stack Developer focused on building
+          scalable and high-performance applications using modern JavaScript
+          stack: React, MongoDB, Node.js, and Express.
         </p>
+
         <div className="flex flex-wrap justify-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
