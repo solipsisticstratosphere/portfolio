@@ -40,3 +40,112 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Project Card Slider Styles */
+.project-preview {
+  position: relative;
+  border-bottom: 1px solid rgba(107, 114, 128, 0.3);
+  overflow: hidden;
+}
+
+.project-preview .swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.project-preview .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1f2937;
+}
+
+/* Hide navigation arrows in project cards */
+.project-preview .swiper-button-next,
+.project-preview .swiper-button-prev {
+  display: none;
+}
+
+.project-preview .swiper-pagination-bullet {
+  background: rgba(99, 102, 241, 0.8);
+}
+
+/* Modal Slider Styles */
+.modal-slider {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.modal-slider .swiper {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.modal-slider .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1f2937;
+}
+
+.modal-slider .swiper-button-next,
+.modal-slider .swiper-button-prev {
+  color: rgba(99, 102, 241, 0.9);
+  width: 40px;
+  height: 40px;
+  background-color: rgba(17, 24, 39, 0.7);
+  border-radius: 50%;
+  padding: 25px;
+  transition: all 0.2s ease;
+}
+
+.modal-slider .swiper-button-next:hover,
+.modal-slider .swiper-button-prev:hover {
+  background-color: rgba(17, 24, 39, 0.9);
+  transform: scale(1.05);
+}
+
+.modal-slider .swiper-button-next:after,
+.modal-slider .swiper-button-prev:after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-slider .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(99, 102, 241, 0.9);
+  opacity: 0.5;
+}
+
+.modal-slider .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #6366f1;
+}
+
+/* Line clamp for project descriptions */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobile Menu Styles */
+.mobile-menu-item {
+  transform-origin: top;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-item:hover {
+  background-color: rgba(99, 102, 241, 0.15);
+}
+
+.mobile-menu-container {
+  overflow: hidden;
+  border: 1px solid rgba(75, 85, 99, 0.5);
+}
