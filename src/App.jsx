@@ -34,12 +34,93 @@ import "swiper/css/autoplay";
 
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
+const AnimatedBackground = () => {
+  const generateParticles = (count) => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 3 + 1,
+      duration: Math.random() * 15 + 10,
+      delay: Math.random() * 5,
+      opacity: Math.random() * 0.5 + 0.1,
+      color:
+        i % 5 === 0
+          ? "#ec4899"
+          : i % 5 === 1
+          ? "#8b5cf6"
+          : i % 5 === 2
+          ? "#6366f1"
+          : i % 5 === 3
+          ? "#2dd4bf"
+          : "#0ea5e9",
+    }));
+  };
+
+  const particles = generateParticles(40);
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {particles.map((particle) => (
+        <ReactMotion.motion.div
+          key={particle.id}
+          className="absolute rounded-full"
+          initial={{
+            x: `${particle.x}vw`,
+            y: `${particle.y}vh`,
+          }}
+          animate={{
+            x: [
+              `${particle.x}vw`,
+              `${(particle.x + 30) % 100}vw`,
+              `${(particle.x + 60) % 100}vw`,
+            ],
+            y: [
+              `${particle.y}vh`,
+              `${(particle.y + 20) % 100}vh`,
+              `${(particle.y + 40) % 100}vh`,
+            ],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+            ease: "linear",
+            times: [0, 0.5, 1],
+          }}
+          style={{
+            width: `${particle.size}px`,
+            height: `${particle.size}px`,
+            background: particle.color,
+            opacity: particle.opacity,
+            boxShadow: `0 0 10px ${particle.color}`,
+            filter: "blur(1px)",
+          }}
+        />
+      ))}
+
+      <div className="absolute inset-0 bg-gradient-radial from-transparent via-indigo-950/50 to-indigo-950/80" />
+    </div>
+  );
+};
+
+const GeometricBackground = () => {
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+      <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-pink-500 mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
+      <div className="absolute top-40 -right-20 w-96 h-96 rounded-full bg-indigo-500 mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-20 left-40 w-96 h-96 rounded-full bg-purple-500 mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000" />
+      <div className="absolute bottom-40 right-40 w-96 h-96 rounded-full bg-cyan-500 mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-6000" />
+    </div>
+  );
+};
+
 const ProjectCard = memo(({ project, index, onProjectClick }) => {
   return (
     <ReactMotion.motion.div
       key={`project-${project.title}`}
-      className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg overflow-hidden border border-gray-700 shadow-lg shadow-indigo-500/10"
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      className="bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 shadow-xl shadow-purple-500/5 hover:shadow-purple-500/20 transition-all duration-300"
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 * index, duration: 0.5 }}
@@ -74,22 +155,22 @@ const ProjectCard = memo(({ project, index, onProjectClick }) => {
         </Swiper>
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-bold mb-2 text-center text-gray-100">
+        <h3 className="text-xl font-bold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
           {project.title}
         </h3>
-        <p className="text-gray-400 mb-4 line-clamp-3 h-18">
+        <p className="text-gray-300 mb-4 line-clamp-3 h-18">
           {project.description}
         </p>
 
         <div className="mb-4">
-          <h4 className="text-sm font-semibold text-center text-gray-500 mb-2">
+          <h4 className="text-sm font-semibold text-center text-gray-400 mb-2">
             Technologies used:
           </h4>
           <div className="flex flex-wrap justify-center gap-2">
             {project.technologies.map((tech, i) => (
               <span
                 key={i}
-                className="px-2 py-1 bg-indigo-900 bg-opacity-50 text-indigo-300 text-xs rounded-full border border-indigo-700"
+                className="px-2 py-1 bg-gray-800 bg-opacity-60 text-pink-400 text-xs rounded-full border border-pink-700/50"
               >
                 {tech}
               </span>
@@ -97,9 +178,9 @@ const ProjectCard = memo(({ project, index, onProjectClick }) => {
           </div>
         </div>
 
-        <div className="flex justify-center gap-3 mt-4">
+        <div className="flex justify-center gap-4 mt-5">
           <button
-            className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+            className="flex items-center gap-1 text-pink-400 hover:text-pink-300 text-xs font-medium transition-colors duration-200"
             onClick={(e) => {
               e.stopPropagation();
               onProjectClick(project);
@@ -111,7 +192,7 @@ const ProjectCard = memo(({ project, index, onProjectClick }) => {
             href={project.demoLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+            className="flex items-center gap-1 text-pink-400 hover:text-pink-300 text-sm font-medium transition-colors duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <ExternalLink size={14} /> Demo
@@ -120,7 +201,7 @@ const ProjectCard = memo(({ project, index, onProjectClick }) => {
             href={project.repoLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+            className="flex items-center gap-1 text-pink-400 hover:text-pink-300 text-sm font-medium transition-colors duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <FaGithub size={14} /> GitHub
@@ -138,7 +219,7 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
     <ReactMotion.AnimatePresence>
       {isOpen && (
         <ReactMotion.motion.div
-          className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -146,7 +227,7 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
           onClick={onClose}
         >
           <ReactMotion.motion.div
-            className="bg-gray-800 rounded-lg overflow-hidden max-w-4xl w-full"
+            className="bg-gray-800 bg-opacity-90 rounded-xl overflow-hidden max-w-4xl w-full shadow-2xl shadow-purple-500/20 border border-gray-700"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
@@ -154,12 +235,12 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-              <h3 className="text-xl font-bold text-gray-100">
+              <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
                 {project.title}
               </h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -177,15 +258,15 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
                 </svg>
               </button>
             </div>
-            <div className="p-4">
-              <div className="modal-slider mb-4">
+            <div className="p-6">
+              <div className="modal-slider mb-6">
                 <Swiper
                   modules={[Navigation, Pagination, Autoplay]}
                   navigation
                   pagination={{ clickable: true }}
                   autoplay={{ delay: 3000 }}
                   loop={true}
-                  className="w-full"
+                  className="w-full rounded-lg overflow-hidden shadow-lg shadow-black/30"
                   style={{ height: "400px" }}
                   preventClicks={false}
                   onClick={() => false}
@@ -208,16 +289,18 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
                   ))}
                 </Swiper>
               </div>
-              <p className="text-gray-300 mb-4">{project.description}</p>
-              <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-500 mb-2">
+              <p className="text-gray-300 mb-6 leading-relaxed">
+                {project.description}
+              </p>
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-gray-400 mb-3">
                   Technologies used:
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech, i) => (
                     <span
                       key={i}
-                      className="px-2 py-1 bg-indigo-900 bg-opacity-50 text-indigo-300 text-xs rounded-full border border-indigo-700"
+                      className="px-3 py-1 bg-gray-800 bg-opacity-80 text-pink-400 text-xm rounded-full border border-pink-700/50"
                     >
                       {tech}
                     </span>
@@ -229,7 +312,7 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
                   href={project.demoLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md inline-flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-xl inline-flex items-center gap-2 shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300"
                 >
                   <ExternalLink size={16} /> Visit Website
                 </a>
@@ -237,7 +320,7 @@ const ProjectModal = memo(({ project, isOpen, onClose }) => {
                   href={project.repoLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 border border-indigo-500 text-indigo-400 hover:text-indigo-300 rounded-md inline-flex items-center gap-2"
+                  className="px-4 py-2 border border-pink-500/50 text-pink-400 hover:text-pink-300 rounded-xl inline-flex items-center gap-2 hover:border-pink-500 transition-all duration-300"
                 >
                   <FaGithub size={16} /> View Code
                 </a>
@@ -262,6 +345,43 @@ const Portfolio = () => {
       setHasVisitedProjects(true);
     }
   }, [activeSection, hasVisitedProjects]);
+
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes blob {
+        0% {
+          transform: translate(0px, 0px) scale(1);
+        }
+        33% {
+          transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-20px, 20px) scale(0.9);
+        }
+        100% {
+          transform: translate(0px, 0px) scale(1);
+        }
+      }
+      .animate-blob {
+        animation: blob 25s infinite;
+      }
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+      .animation-delay-6000 {
+        animation-delay: 6s;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   const handleProjectClick = (project) => {
     setSelectedProject(project);
@@ -394,8 +514,8 @@ const Portfolio = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
       style={{
-        background: "linear-gradient(135deg, #121212 0%, #1e1e1e 100%)",
-        boxShadow: "inset 0 0 100px rgba(79, 70, 229, 0.1)",
+        background: "",
+        boxShadow: "inset 0 0 150px rgba(129, 140, 248, 0.2)",
       }}
     >
       <ReactMotion.motion.div
@@ -404,31 +524,37 @@ const Portfolio = () => {
         transition={{ delay: 0.2, duration: 0.8 }}
         className="max-w-4xl mx-auto text-center"
       >
-        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
+        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
           Yaroslav Klimenko - Full Stack Developer
         </h1>
-        <h2 className="text-3xl md:text-4xl text-gray-400 mb-6">
+        <h2 className="text-3xl md:text-4xl text-gray-300 mb-6">
           Building complex web applications from server to client
         </h2>
         <p className="text-xl max-w-2xl mx-auto mb-8 text-gray-300">
           I'm Yaroslav Klimenko, a Full Stack Developer focused on building
           scalable and high-performance applications using modern JavaScript
-          stack: React, MongoDB, Node.js, and Express.
+          stack: React, PostgreSQL, Next.js, Node.js, and Express.
         </p>
 
         <div className="flex flex-wrap justify-center gap-4">
           <ReactMotion.motion.button
-            whileHover={{ scale: 1.05 }}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 0 15px rgba(129, 140, 248, 0.5)",
+            }}
             whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-md flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-xl flex items-center gap-2 shadow-lg shadow-purple-500/20"
             onClick={() => setActiveSection("contact")}
           >
             <Mail size={18} /> Contact Me
           </ReactMotion.motion.button>
           <ReactMotion.motion.button
-            whileHover={{ scale: 1.05 }}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 0 15px rgba(129, 140, 248, 0.3)",
+            }}
             whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 border border-indigo-500 text-indigo-400 rounded-md flex items-center gap-2"
+            className="px-6 py-3 border border-indigo-500 text-indigo-300 rounded-xl flex items-center gap-2 backdrop-blur-sm bg-indigo-900/10"
             onClick={() => setActiveSection("projects")}
           >
             <Briefcase size={18} /> View Projects
@@ -444,6 +570,10 @@ const Portfolio = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
+      style={{
+        background: "",
+        boxShadow: "inset 0 0 150px rgba(129, 140, 248, 0.2)",
+      }}
     >
       <ReactMotion.motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -452,8 +582,8 @@ const Portfolio = () => {
         className="max-w-6xl mx-auto"
       >
         <div className="flex items-center justify-center gap-3 mb-12">
-          <User className="text-indigo-500" size={32} />
-          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
+          <User className="text-indigo-400" size={32} />
+          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
             About Me
           </h2>
         </div>
@@ -481,14 +611,14 @@ const Portfolio = () => {
             </p>
           </div>
 
-          <div className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-6 rounded-lg border border-gray-700">
+          <div className="bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-6 rounded-xl border border-gray-700 shadow-xl shadow-purple-500/5">
             <h3 className="text-xl font-semibold mb-4 text-center text-gray-200">
               My experience includes:
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
                 <ChevronRight
-                  className="text-indigo-500 mt-1 flex-shrink-0"
+                  className="text-pink-500 mt-1 flex-shrink-0"
                   size={18}
                 />
                 <span className="text-gray-300">
@@ -498,7 +628,7 @@ const Portfolio = () => {
               </li>
               <li className="flex items-start gap-2">
                 <ChevronRight
-                  className="text-indigo-500 mt-1 flex-shrink-0"
+                  className="text-pink-500 mt-1 flex-shrink-0"
                   size={18}
                 />
                 <span className="text-gray-300">
@@ -508,7 +638,7 @@ const Portfolio = () => {
               </li>
               <li className="flex items-start gap-2">
                 <ChevronRight
-                  className="text-indigo-500 mt-1 flex-shrink-0"
+                  className="text-pink-500 mt-1 flex-shrink-0"
                   size={18}
                 />
                 <span className="text-gray-300">
@@ -518,7 +648,7 @@ const Portfolio = () => {
               </li>
               <li className="flex items-start gap-2">
                 <ChevronRight
-                  className="text-indigo-500 mt-1 flex-shrink-0"
+                  className="text-pink-500 mt-1 flex-shrink-0"
                   size={18}
                 />
                 <span className="text-gray-300">
@@ -528,7 +658,7 @@ const Portfolio = () => {
               </li>
               <li className="flex items-start gap-2">
                 <ChevronRight
-                  className="text-indigo-500 mt-1 flex-shrink-0"
+                  className="text-pink-500 mt-1 flex-shrink-0"
                   size={18}
                 />
                 <span className="text-gray-300">
@@ -538,7 +668,7 @@ const Portfolio = () => {
               </li>
               <li className="flex items-start gap-2">
                 <ChevronRight
-                  className="text-indigo-500 mt-1 flex-shrink-0"
+                  className="text-pink-500 mt-1 flex-shrink-0"
                   size={18}
                 />
                 <span className="text-gray-300">
@@ -559,6 +689,10 @@ const Portfolio = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
+      style={{
+        background: "",
+        boxShadow: "inset 0 0 150px rgba(129, 140, 248, 0.2)",
+      }}
     >
       <ReactMotion.motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -567,8 +701,8 @@ const Portfolio = () => {
         className="max-w-6xl mx-auto"
       >
         <div className="flex items-center justify-center gap-3 mb-12">
-          <Briefcase className="text-indigo-500" size={32} />
-          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
+          <Briefcase className="text-indigo-400" size={32} />
+          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
             Projects
           </h2>
         </div>
@@ -593,6 +727,10 @@ const Portfolio = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
+      style={{
+        background: "",
+        boxShadow: "inset 0 0 150px rgba(129, 140, 248, 0.2)",
+      }}
     >
       <ReactMotion.motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -601,8 +739,8 @@ const Portfolio = () => {
         className="max-w-6xl mx-auto"
       >
         <div className="flex items-center justify-center gap-3 mb-12">
-          <PenTool className="text-indigo-500" size={32} />
-          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
+          <PenTool className="text-indigo-400" size={32} />
+          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
             Skills
           </h2>
         </div>
@@ -626,9 +764,9 @@ const Portfolio = () => {
                     </span>
                     <span className="text-gray-400">{skill.level}%</span>
                   </div>
-                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-3 bg-gray-800 rounded-full overflow-hidden shadow-inner">
                     <ReactMotion.motion.div
-                      className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full"
+                      className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${skill.level}%` }}
                       transition={{ delay: 0.1 * index + 0.3, duration: 1.2 }}
@@ -643,7 +781,7 @@ const Portfolio = () => {
             <h3 className="text-2xl font-semibold mb-6 text-center text-gray-200">
               Technology Stack
             </h3>
-            <div className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <div className="bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-4 rounded-xl border border-gray-700 shadow-xl shadow-purple-500/5">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={skills}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#333" />
@@ -668,7 +806,8 @@ const Portfolio = () => {
                       x2="1"
                       y2="0"
                     >
-                      <stop offset="0%" stopColor="#8b5cf6" />
+                      <stop offset="0%" stopColor="#ec4899" />
+                      <stop offset="50%" stopColor="#8b5cf6" />
                       <stop offset="100%" stopColor="#6366f1" />
                     </linearGradient>
                   </defs>
@@ -681,28 +820,28 @@ const Portfolio = () => {
                 Specializations
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-3 rounded-lg border border-gray-700">
-                  <Server size={16} className="text-indigo-500" />
+                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-3 rounded-xl border border-gray-700 shadow-lg shadow-purple-500/5 hover:border-pink-500/50 transition-all duration-300">
+                  <Server size={16} className="text-pink-500" />
                   <span className="text-gray-300">RESTful API</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-3 rounded-lg border border-gray-700">
-                  <Database size={16} className="text-indigo-500" />
+                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-3 rounded-xl border border-gray-700 shadow-lg shadow-purple-500/5 hover:border-pink-500/50 transition-all duration-300">
+                  <Database size={16} className="text-pink-500" />
                   <span className="text-gray-300">MongoDB</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-3 rounded-lg border border-gray-700">
-                  <Layers size={16} className="text-indigo-500" />
+                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-3 rounded-xl border border-gray-700 shadow-lg shadow-purple-500/5 hover:border-pink-500/50 transition-all duration-300">
+                  <Layers size={16} className="text-pink-500" />
                   <span className="text-gray-300">Microservices</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-3 rounded-lg border border-gray-700">
-                  <Globe size={16} className="text-indigo-500" />
+                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-3 rounded-xl border border-gray-700 shadow-lg shadow-purple-500/5 hover:border-pink-500/50 transition-all duration-300">
+                  <Globe size={16} className="text-pink-500" />
                   <span className="text-gray-300">WebSockets</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-3 rounded-lg border border-gray-700">
-                  <Code size={16} className="text-indigo-500" />
+                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-3 rounded-xl border border-gray-700 shadow-lg shadow-purple-500/5 hover:border-pink-500/50 transition-all duration-300">
+                  <Code size={16} className="text-pink-500" />
                   <span className="text-gray-300">Docker</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm p-3 rounded-lg border border-gray-700">
-                  <Server size={16} className="text-indigo-500" />
+                <div className="flex items-center justify-center gap-2 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm p-3 rounded-xl border border-gray-700 shadow-lg shadow-purple-500/5 hover:border-pink-500/50 transition-all duration-300">
+                  <Server size={16} className="text-pink-500" />
                   <span className="text-gray-300">AWS/Cloud</span>
                 </div>
               </div>
@@ -719,6 +858,10 @@ const Portfolio = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
+      style={{
+        background: "",
+        boxShadow: "inset 0 0 150px rgba(129, 140, 248, 0.2)",
+      }}
     >
       <ReactMotion.motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -727,8 +870,8 @@ const Portfolio = () => {
         className="max-w-4xl mx-auto"
       >
         <div className="flex items-center justify-center gap-3 mb-10">
-          <Mail className="text-indigo-500" size={32} />
-          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
+          <Mail className="text-indigo-400" size={32} />
+          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
             Contact
           </h2>
         </div>
@@ -742,10 +885,13 @@ const Portfolio = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <ReactMotion.motion.a
               href="mailto:klimyarik13@gmail.com"
-              className="flex items-center gap-4 p-6 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 hover:border-indigo-700 transition-all duration-300"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="flex items-center gap-4 p-6 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-xl shadow-xl border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
+              whileHover={{
+                y: -5,
+                boxShadow: "0 10px 25px -5px rgba(236, 72, 153, 0.3)",
+              }}
             >
-              <Mail size={24} className="text-indigo-500" />
+              <Mail size={24} className="text-pink-500" />
               <div>
                 <h3 className="font-semibold text-gray-200">Email</h3>
                 <p className="text-gray-400">klimyarik13@gmail.com</p>
@@ -756,10 +902,13 @@ const Portfolio = () => {
               href="https://t.me/nosebl33d"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 p-6 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 hover:border-indigo-700 transition-all duration-300"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="flex items-center gap-4 p-6 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-xl shadow-xl border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
+              whileHover={{
+                y: -5,
+                boxShadow: "0 10px 25px -5px rgba(236, 72, 153, 0.3)",
+              }}
             >
-              <MessageSquare size={24} className="text-indigo-500" />
+              <MessageSquare size={24} className="text-pink-500" />
               <div>
                 <h3 className="font-semibold text-gray-200">Telegram</h3>
                 <p className="text-gray-400">@nosebl33d</p>
@@ -772,20 +921,28 @@ const Portfolio = () => {
               href="https://github.com/solipsisticstratosphere"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -5, scale: 1.1, transition: { duration: 0.2 } }}
-              className="p-3 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-full shadow-lg border border-gray-700 hover:border-indigo-600 transition-all duration-300"
+              whileHover={{
+                y: -5,
+                scale: 1.1,
+                boxShadow: "0 10px 25px -5px rgba(236, 72, 153, 0.3)",
+              }}
+              className="p-3 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-full shadow-xl border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
             >
-              <FaGithub size={24} className="text-indigo-500" />
+              <FaGithub size={24} className="text-pink-500" />
             </ReactMotion.motion.a>
 
             <ReactMotion.motion.a
               href="https://www.linkedin.com/in/klimenko-yaroslav/"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -5, scale: 1.1, transition: { duration: 0.2 } }}
-              className="p-3 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-full shadow-lg border border-gray-700 hover:border-indigo-600 transition-all duration-300"
+              whileHover={{
+                y: -5,
+                scale: 1.1,
+                boxShadow: "0 10px 25px -5px rgba(236, 72, 153, 0.3)",
+              }}
+              className="p-3 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-full shadow-xl border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
             >
-              <FaLinkedin size={24} className="text-indigo-500" />
+              <FaLinkedin size={24} className="text-pink-500" />
             </ReactMotion.motion.a>
           </div>
         </div>
@@ -809,8 +966,12 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-black text-gray-100 min-h-screen">
-      <header className="fixed top-0 left-0 right-0 bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-lg border-b border-gray-800 shadow-lg shadow-black/20 z-10">
+    <div className="text-gray-100 min-h-screen relative">
+      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 z-[-2]" />
+      <AnimatedBackground />
+      <GeometricBackground />
+
+      <header className="fixed top-0 left-0 right-0 bg-gray-900 bg-opacity-40 backdrop-filter backdrop-blur-lg border-b border-gray-800/30 shadow-lg shadow-black/20 z-10">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <ReactMotion.motion.div
@@ -819,18 +980,18 @@ const Portfolio = () => {
               onClick={() => setActiveSection("hero")}
               style={{ cursor: "pointer" }}
             >
-              <span className="text-indigo-500">FullStack</span>
-              <span className="text-gray-200">Dev</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
+                Yaroslav
+              </span>
+              <span className="text-gray-200">Klimenko</span>
             </ReactMotion.motion.div>
 
             <nav className="hidden md:flex space-x-8">
               <button
                 onClick={() => setActiveSection("about")}
                 className={`${
-                  activeSection === "about"
-                    ? "text-indigo-400"
-                    : "text-gray-400"
-                } hover:text-indigo-400 transition-colors duration-300`}
+                  activeSection === "about" ? "text-pink-400" : "text-gray-400"
+                } hover:text-pink-400 transition-colors duration-300`}
               >
                 About Me
               </button>
@@ -838,19 +999,17 @@ const Portfolio = () => {
                 onClick={() => setActiveSection("projects")}
                 className={`${
                   activeSection === "projects"
-                    ? "text-indigo-400"
+                    ? "text-pink-400"
                     : "text-gray-400"
-                } hover:text-indigo-400 transition-colors duration-300`}
+                } hover:text-pink-400 transition-colors duration-300`}
               >
                 Projects
               </button>
               <button
                 onClick={() => setActiveSection("skills")}
                 className={`${
-                  activeSection === "skills"
-                    ? "text-indigo-400"
-                    : "text-gray-400"
-                } hover:text-indigo-400 transition-colors duration-300`}
+                  activeSection === "skills" ? "text-pink-400" : "text-gray-400"
+                } hover:text-pink-400 transition-colors duration-300`}
               >
                 Skills
               </button>
@@ -858,9 +1017,9 @@ const Portfolio = () => {
                 onClick={() => setActiveSection("contact")}
                 className={`${
                   activeSection === "contact"
-                    ? "text-indigo-400"
+                    ? "text-pink-400"
                     : "text-gray-400"
-                } hover:text-indigo-400 transition-colors duration-300`}
+                } hover:text-pink-400 transition-colors duration-300`}
               >
                 Contact
               </button>
@@ -893,7 +1052,7 @@ const Portfolio = () => {
           <ReactMotion.AnimatePresence>
             {mobileMenuOpen && (
               <ReactMotion.motion.div
-                className="md:hidden mt-4 bg-gray-800 bg-opacity-95 rounded-lg shadow-xl p-4 mobile-menu-container"
+                className="md:hidden mt-4 bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl p-4 mobile-menu-container"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
@@ -911,7 +1070,7 @@ const Portfolio = () => {
                     }}
                     className={`py-2 px-3 rounded-md mobile-menu-item ${
                       activeSection === "about"
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white"
                         : "text-gray-300"
                     }`}
                   >
@@ -928,7 +1087,7 @@ const Portfolio = () => {
                     }}
                     className={`py-2 px-3 rounded-md mobile-menu-item ${
                       activeSection === "projects"
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white"
                         : "text-gray-300"
                     }`}
                   >
@@ -945,7 +1104,7 @@ const Portfolio = () => {
                     }}
                     className={`py-2 px-3 rounded-md mobile-menu-item ${
                       activeSection === "skills"
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white"
                         : "text-gray-300"
                     }`}
                   >
@@ -962,7 +1121,7 @@ const Portfolio = () => {
                     }}
                     className={`py-2 px-3 rounded-md mobile-menu-item ${
                       activeSection === "contact"
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white"
                         : "text-gray-300"
                     }`}
                   >
@@ -975,17 +1134,16 @@ const Portfolio = () => {
         </div>
       </header>
 
-      <main className="pt-16">{renderSection()}</main>
+      <main className="pt-16 relative z-0">{renderSection()}</main>
       <ProjectModal
         project={selectedProject}
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
       />
-      <footer className="bg-gray-900 border-t border-gray-800 py-6">
-        <div className="container mx-auto px-6 text-center text-gray-400">
-          <p>
-            © {new Date().getFullYear()} FullStack Developer Portfolio. All
-            rights reserved.
+      <footer className="bg-gray-900 bg-opacity-40 backdrop-filter backdrop-blur-lg border-t border-gray-800/30 py-6">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-gray-400">
+            © {new Date().getFullYear()} Yaroslav Klimenko. All rights reserved.
           </p>
         </div>
       </footer>
