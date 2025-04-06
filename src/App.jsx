@@ -285,6 +285,23 @@ const Portfolio = () => {
 
   const projects = [
     {
+      title: "Fit Track",
+      description:
+        "A user-friendly web application that empowers individuals to track their fitness journey. Users can log workouts, monitor weight changes, and analyze their progress, gaining valuable insights into their health and fitness goals.",
+      technologies: [
+        "Next.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Prisma",
+        "Node.js",
+        "Express",
+        "Cloudinary",
+        "NextAuth.js",
+      ],
+      demoLink: "https://fit-track-tfso.vercel.app/",
+      repoLink: "https://github.com/solipsisticstratosphere/Fit-Track",
+    },
+    {
       title: "E-Pharmacy Admin Panel",
       description:
         "A comprehensive web application designed for pharmacy management, enabling seamless control over products, orders, customers, and suppliers, with real-time analytics and an intuitive dashboard for efficient decision-making.",
@@ -370,7 +387,6 @@ const Portfolio = () => {
     },
   ];
 
-  // Memoize all section components
   const Hero = memo(({ setActiveSection }) => (
     <ReactMotion.motion.div
       className="min-h-screen flex flex-col justify-center px-8 md:px-16"
