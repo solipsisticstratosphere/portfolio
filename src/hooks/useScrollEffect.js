@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 
 export const useScrollEffect = () => {
   useEffect(() => {
-    // Set smooth scrolling behavior for the document
     document.documentElement.style.scrollBehavior = "smooth";
 
-    // Handle anchor link clicks for smooth scrolling
     const handleAnchorClick = (e) => {
       const href = e.currentTarget.getAttribute("href");
       if (href && href.startsWith("#")) {
@@ -22,13 +20,11 @@ export const useScrollEffect = () => {
       }
     };
 
-    // Add event listeners to all anchor links
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
     anchorLinks.forEach((link) => {
       link.addEventListener("click", handleAnchorClick);
     });
 
-    // Cleanup
     return () => {
       document.documentElement.style.scrollBehavior = "";
       anchorLinks.forEach((link) => {
