@@ -1,29 +1,40 @@
-import React from "react";
-import * as ReactMotion from "framer-motion";
+import React, { useEffect, useRef } from "react";
 import { Mail, Briefcase } from "lucide-react";
-import {
-  buttonHoverAnimation,
-  buttonTapAnimation,
-} from "../../constants/animations";
 
 const Hero = () => {
+  const headingRef = useRef(null);
+
+  useEffect(() => {
+    if (headingRef.current) {
+      headingRef.current.setAttribute("importance", "high");
+
+      headingRef.current.getBoundingClientRect();
+    }
+  }, []);
+
   return (
-    <ReactMotion.motion.div
+    <div
       className="min-h-screen flex flex-col justify-center px-8 md:px-16"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
       style={{
         boxShadow: "inset 0 0 150px rgba(129, 140, 248, 0.2)",
+        contain: "layout",
+        contentVisibility: "auto",
       }}
     >
-      <ReactMotion.motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.8 }}
-        className="max-w-4xl mx-auto text-center"
-      >
-        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1
+          ref={headingRef}
+          className="text-5xl md:text-7xl font-bold mb-4"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #ec4899, #8b5cf6, #6366f1)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+            willChange: "transform",
+            fontDisplay: "swap",
+          }}
+        >
           Yaroslav Klimenko - Full Stack Developer
         </h1>
         <h2 className="text-3xl md:text-4xl text-gray-300 mb-6">
@@ -36,28 +47,44 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-wrap justify-center gap-4">
-          <ReactMotion.motion.a
+          <a
             href="#contact"
-            whileHover={buttonHoverAnimation}
-            whileTap={buttonTapAnimation}
-            className="px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-xl flex items-center gap-2 shadow-lg shadow-purple-500/20"
+            className="px-6 py-3 text-white rounded-xl flex items-center gap-2 shadow-lg"
+            style={{
+              background:
+                "linear-gradient(to right, #ec4899, #8b5cf6, #6366f1)",
+              boxShadow: "0 10px 15px -3px rgba(139, 92, 246, 0.2)",
+              transition: "transform 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+            }}
           >
             <Mail size={18} /> Contact Me
-          </ReactMotion.motion.a>
-          <ReactMotion.motion.a
+          </a>
+          <a
             href="#projects"
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 15px rgba(129, 140, 248, 0.3)",
+            className="px-6 py-3 text-indigo-300 rounded-xl flex items-center gap-2 backdrop-blur-sm"
+            style={{
+              border: "1px solid #6366f1",
+              backgroundColor: "rgba(79, 70, 229, 0.1)",
+              transition: "transform 0.2s",
             }}
-            whileTap={buttonTapAnimation}
-            className="px-6 py-3 border border-indigo-500 text-indigo-300 rounded-xl flex items-center gap-2 backdrop-blur-sm bg-indigo-900/10"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+            }}
           >
             <Briefcase size={18} /> View Projects
-          </ReactMotion.motion.a>
+          </a>
         </div>
-      </ReactMotion.motion.div>
-    </ReactMotion.motion.div>
+      </div>
+    </div>
   );
 };
 
